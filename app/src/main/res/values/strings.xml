@@ -1,3 +1,23 @@
 <resources>
-    <string name="app_name">everybag.express.android</string>
+    <string name="activity_transition">activity_transition</string>
+    <string name="dialog_message_no">"No"</string>
+    <string name="dialog_message_ok">"OK"</string>
+    <string name="dialog_message_quite_message">"Do you really want to close everybag ?"</string>
+    <string name="dialog_message_quite_title">"Close everybag"</string>
+    <string name="dialog_message_yes">"Yes"</string>
+    <string name="dialog_access_camera">"Cannot access to the camera."</string>
+    <string name="dialog_address_deleted_message">"Address deleted"</string>
+    <string name="dialog_address_delete_message">"Are you sure you want to delete this address ?"</string>
+    <string name="dialog_code_product_message">"You must put the code of the product"</string>
+    <string name="dialog_message_cancel">"Cancel"</string>
+    <string name="dialog_picture_selection_title">"Select Picture"</string>
+    <string name="dialog_product_added">"Product Added to : "</string>
+    <string name="dialog_product_not_found">"Product not found, check your code againe"</string>
+    <string name="dialog_refreshed_message">"Refreshed !"</string>
+    <string name="dialog_message">"Exit"</string>
+    <string name="dialog_message_confirmation">"Do you really want to close everybag ?"</string>
+    <string name="error_no_network_label">"No networks"</string>
+    <string name="error_no_network_msg">"No networks available, please check your network connection."</string>
+    <string name="notification_screenshot_title">"everybag search buddy"</string>
+    <string name="notification_screenshot_message">"Tap for visual product search"</string>
 </resources>
