@@ -74,11 +74,11 @@ internal class SearchResultsAdapter(private val listener: ISearchResultsViewItem
             Picasso
                     .get()
                     .load(url)
-                    .placeholder(R.mipmap.ic_launcher_round)
+                    .placeholder(R.mipmap.ic_launcher)
                     .into(viewHolder.imOffer)
         }
 
-        if (offer.links != null && offer.links?.main != null) {
+        if (offer.links?.main != null) {
             viewHolder.imgCart.visibility = View.VISIBLE
             viewHolder.imgCart.tag = offer
             viewHolder.btnShopping.tag = offer

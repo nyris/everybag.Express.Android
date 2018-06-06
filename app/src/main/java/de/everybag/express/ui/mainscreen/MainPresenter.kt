@@ -10,7 +10,7 @@ import android.provider.MediaStore
 import android.support.media.ExifInterface
 import de.everybag.express.BuildConfig
 import de.everybag.express.di.ActivityScoped
-import de.everybag.express.model.toParcelable
+import de.everybag.express.utils.toParcelable
 import io.nyris.camera.*
 import io.nyris.sdk.*
 import io.reactivex.Single

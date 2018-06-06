@@ -9,8 +9,8 @@ import android.os.*
 import android.provider.MediaStore
 import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
-import de.everybag.express.ui.MainActivity
 import de.everybag.express.R
+import de.everybag.express.ui.mainscreen.MainActivity
 import de.everybag.express.utils.ActionsConst
 import de.everybag.express.utils.KeysConst
 
