@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/view_camera"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/tvCaptureLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/vPosCam"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:text="Capture your product"
+        android:textColor="@android:color/white" />
+
+    <RelativeLayout
+        android:id="@+id/rlCameraPreview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <de.everybag.express.custom.ImageCameraView
+            android:id="@+id/imPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/imPreview"
+            android:layout_alignLeft="@+id/imPreview"
+            android:layout_alignRight="@+id/imPreview"
+            android:layout_alignTop="@+id/imPreview"
+            android:layout_alignEnd="@+id/imPreview"
+            android:layout_alignStart="@+id/imPreview">
+
+            <de.everybag.express.custom.pinViewCropper.PinViewCropper
+                android:id="@+id/viewPinCropper"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/imCropped"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:transitionName="@string/activity_transition" />
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/vProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp" />
+
+    <View
+        android:id="@+id/vPosCam"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:visibility="invisible" />
+
+    <de.everybag.express.custom.CircleView
+        android:id="@+id/cvTakePic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true" />
+
+    <FrameLayout
+        android:id="@+id/imValidate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/vPosCam"
+        android:layout_alignLeft="@+id/vPosCam"
+        android:layout_alignRight="@+id/vPosCam"
+        android:layout_alignTop="@+id/vPosCam"
+        android:visibility="gone"
+        android:layout_alignStart="@+id/vPosCam"
+        android:layout_alignEnd="@+id/vPosCam">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/ic_done" />
+    </FrameLayout>
+</RelativeLayout>
