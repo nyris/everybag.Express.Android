@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootSnack"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#4f4f4f"
+    android:minHeight="50dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tvSnackMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left|start"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="@integer/design_snackbar_text_max_lines"
+        android:paddingBottom="@dimen/design_snackbar_padding_vertical"
+        android:paddingLeft="@dimen/design_snackbar_padding_horizontal"
+        android:paddingRight="@dimen/design_snackbar_padding_horizontal"
+        android:paddingTop="@dimen/design_snackbar_padding_vertical"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btnActionOne"
+        style="?attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|right|end"
+        android:layout_marginLeft="@dimen/design_snackbar_extra_spacing_horizontal"
+        android:layout_marginStart="@dimen/design_snackbar_extra_spacing_horizontal"
+        android:minWidth="48dp"
+        android:padding="8dp"
+        android:textColor="?attr/colorAccent"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btnActionTwo"
+        style="?attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|right|end"
+        android:layout_marginLeft="@dimen/design_snackbar_extra_spacing_horizontal"
+        android:layout_marginStart="@dimen/design_snackbar_extra_spacing_horizontal"
+        android:minWidth="48dp"
+        android:padding="8dp"
+        android:textColor="?attr/colorAccent"
+        android:textSize="12sp" />
+</LinearLayout>
