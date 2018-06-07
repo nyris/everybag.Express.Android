@@ -1,6 +1,8 @@
 package de.everybag.express.base
 
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.view.inputmethod.InputMethodManager
 import dagger.android.support.DaggerAppCompatActivity
@@ -14,6 +16,12 @@ import de.everybag.express.utils.ParamsUtils
  * Copyright © 2018 nyris GmbH. All rights reserved.
  */
 abstract class BaseActivity : DaggerAppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).cancelAll()
+    }
+
     fun hideKeyboard() {
         val view = this.currentFocus
         if (view != null) {
