@@ -142,10 +142,6 @@ class MainFragment @Inject constructor() : BaseFragment<MainContract.Presenter>(
                     showViewPinCropper()
                 }
             } else {
-                if (!mPresenter.isStillKeepingObjects()) {
-                    mPresenter.clear()
-                }
-
                 val imageUri = arguments?.getParcelable<Uri>(KeysConst.SCREENSHOT_PATH)
                 arguments?.putString(KeysConst.ACTION, null)
 

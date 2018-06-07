@@ -87,7 +87,7 @@ public class PinView extends View {
         }
     }
 
-    public void addOnPinClickListner(OnPinClickListener onPinClickListener) {
+    public void addOnPinClickListener(OnPinClickListener onPinClickListener) {
         onPinClickListeners.add(onPinClickListener);
     }
 }

@@ -160,7 +160,7 @@ public class PinViewCropper extends FrameLayout {
         if (pinViews == null)
             return;
         for (PinView pinView : pinViews) {
-            pinView.addOnPinClickListner(onPinClickListener);
+            pinView.addOnPinClickListener(onPinClickListener);
         }
     }
 
@@ -366,7 +366,7 @@ public class PinViewCropper extends FrameLayout {
             pinView.setLayoutParams(layoutParams);
             addView(pinView);
             for (OnPinClickListener onPinClickListener : onPinClickListeners)
-                pinView.addOnPinClickListner(onPinClickListener);
+                pinView.addOnPinClickListener(onPinClickListener);
             pinViews.add(pinView);
         }
     }

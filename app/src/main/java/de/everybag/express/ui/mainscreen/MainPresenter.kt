@@ -141,8 +141,7 @@ class MainPresenter @Inject constructor(private val matchingApi: IImageMatchingA
             mObjectProposalList.add(rectF)
         }
 
-        if (!mObjectProposalList.isEmpty() && !mOfferList.isEmpty())
-            return
+        if (!mObjectProposalList.isEmpty()) return
 
         val width: Float
         val height: Float
@@ -176,6 +175,7 @@ class MainPresenter @Inject constructor(private val matchingApi: IImageMatchingA
     }
 
     override fun cropObjectImage(rectF: RectF) {
+        val newRectF= RectF(rectF)
         val targetSize = mTargetSize!!
         val bitmapForCropping = mBitmapForCropping!!
         val bitmapForPreviewing = mBitmapForPreviewing!!
@@ -191,23 +191,23 @@ class MainPresenter @Inject constructor(private val matchingApi: IImageMatchingA
                     bitmapForCropping.height,
                     0,
                     true)
-            matrixTransform.mapRect(rectF)
+            matrixTransform.mapRect(newRectF)
         }
 
-        if (rectF.left < 0)
-            rectF.left = 0f
-        if (rectF.top < 0)
-            rectF.top = 0f
-        if (rectF.bottom > bitmapForCropping.height)
-            rectF.bottom = bitmapForCropping.height.toFloat()
-        if (rectF.right > bitmapForCropping.width)
-            rectF.right = bitmapForCropping.width.toFloat()
+        if (newRectF.left < 0)
+            newRectF.left = 0f
+        if (newRectF.top < 0)
+            newRectF.top = 0f
+        if (newRectF.bottom > bitmapForCropping.height)
+            newRectF.bottom = bitmapForCropping.height.toFloat()
+        if (newRectF.right > bitmapForCropping.width)
+            newRectF.right = bitmapForCropping.width.toFloat()
 
         val croppedBitmap = Bitmap.createBitmap(bitmapForCropping,
-                rectF.left.toInt(),
-                rectF.top.toInt(),
-                rectF.width().toInt(),
-                rectF.height().toInt())
+                newRectF.left.toInt(),
+                newRectF.top.toInt(),
+                newRectF.width().toInt(),
+                newRectF.height().toInt())
 
         mView?.showOffersActivity(croppedBitmap, rectF, mOfferList.toParcelable())
     }
