@@ -8,5 +8,5 @@ package de.everybag.express.utils
  * Copyright © 2018 nyris GmbH. All rights reserved.
  */
 object ActionsConst {
-    const val HANDLE_SCREENSHOT = "HANDLE_SCREENSHOT"
+    const val HANDLE_SCREENSHOT = "de.everybag.express.android.action.HANDLE_SCREENSHOT"
 }

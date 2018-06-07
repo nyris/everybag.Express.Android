@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v4.app.ActivityCompat
 import android.view.inputmethod.InputMethodManager
 import dagger.android.support.DaggerAppCompatActivity
+import de.everybag.express.utils.ParamsUtils
 
 /**
  *
@@ -19,6 +20,16 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ParamsUtils.saveParam(this, "isRunning",true.toString())
+    }
+
+    override fun onPause() {
+        super.onPause()
+        ParamsUtils.saveParam(this, "isRunning",false.toString())
     }
 
     override fun onBackPressed() {

@@ -1,18 +1,20 @@
 package de.everybag.express.service
 
-import android.app.*
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.app.Service
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
-import android.os.*
+import android.os.Handler
+import android.os.HandlerThread
+import android.os.IBinder
+import android.os.SystemClock
 import android.provider.MediaStore
-import android.support.v4.app.NotificationCompat
-import android.support.v4.content.ContextCompat
-import de.everybag.express.R
-import de.everybag.express.ui.mainscreen.MainActivity
 import de.everybag.express.utils.ActionsConst
 import de.everybag.express.utils.KeysConst
+import de.everybag.express.utils.ParamsUtils
 
 
 /**
@@ -61,36 +63,26 @@ class ScreenshotService : Service(), IOnScreenshotTakenListener {
         )
     }
 
-    override fun onScreenshotTaken(uri: Uri) {
-        val idChannel = "everybag_channel"
+    private fun sendImplicitBroadcast(i: Intent) {
+        val pm = packageManager
+        val matches = pm.queryBroadcastReceivers(i, 0)
 
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra(KeysConst.ACTION, ActionsConst.HANDLE_SCREENSHOT)
-        intent.putExtra(KeysConst.SCREENSHOT_PATH, uri.encodedPath)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        for (resolveInfo in matches) {
+            val explicit = Intent(i)
+            val cn = ComponentName(resolveInfo.activityInfo.applicationInfo.packageName,
+                    resolveInfo.activityInfo.name)
 
-        val builder = NotificationCompat.Builder(this, idChannel)
-                .setContentTitle(getText(R.string.notification_screenshot_title))
-                .setContentText(getText(R.string.notification_screenshot_message))
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentIntent(pendingIntent)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(idChannel, getString(R.string.app_name), importance)
-            channel.description = idChannel
-            channel.enableLights(true)
-            channel.lightColor = Color.RED
-            channel.enableVibration(true)
-            notificationManager.createNotificationChannel(channel)
-        } else {
-            builder.setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setColor(ContextCompat.getColor(this, android.R.color.transparent))
-                    .setAutoCancel(true)
+            explicit.component = cn
+            sendOrderedBroadcast(explicit, null)
         }
+    }
 
-        builder.setChannelId(idChannel)
-        notificationManager.notify(1, builder.build())
+    override fun onScreenshotTaken(uri: Uri) {
+        val isRunning = ParamsUtils.getParam(this, "isRunning").toBoolean()
+        if(isRunning)
+            return
+        val broadcast = Intent(ActionsConst.HANDLE_SCREENSHOT)
+        broadcast.putExtra(KeysConst.SCREENSHOT_PATH, uri.encodedPath)
+        sendImplicitBroadcast(broadcast)
     }
 }

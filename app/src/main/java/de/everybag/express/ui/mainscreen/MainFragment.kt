@@ -123,6 +123,8 @@ class MainFragment @Inject constructor() : BaseFragment<MainContract.Presenter>(
 
     override fun onResume() {
         super.onResume()
+        imCropped.setImageBitmap(null)
+
         if (ContextCompat.checkSelfPermission(context!!, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(context!!, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             mPresenter.onAttach(this)
@@ -140,6 +142,10 @@ class MainFragment @Inject constructor() : BaseFragment<MainContract.Presenter>(
                     showViewPinCropper()
                 }
             } else {
+                if (!mPresenter.isStillKeepingObjects()) {
+                    mPresenter.clear()
+                }
+
                 val imageUri = arguments?.getParcelable<Uri>(KeysConst.SCREENSHOT_PATH)
                 arguments?.putString(KeysConst.ACTION, null)
 
@@ -276,11 +282,11 @@ class MainFragment @Inject constructor() : BaseFragment<MainContract.Presenter>(
     }
 
     override fun showImageCameraPreview() {
-        imPreview.visibility = View.VISIBLE
+        rlCameraPreview.visibility = View.VISIBLE
     }
 
     override fun hideImageCameraPreview() {
-        imPreview.visibility = View.GONE
+        rlCameraPreview.visibility = View.INVISIBLE
     }
 
     override fun showLabelCapture() {

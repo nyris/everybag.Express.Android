@@ -81,14 +81,13 @@ class MainPresenter @Inject constructor(private val matchingApi: IImageMatchingA
     }
 
     override fun onPictureTaken(cameraView: BaseCameraView, resizedImage: ByteArray) {
-        mOfferList.clear()
-        mObjectProposalList.clear()
         mIsMatching = true
-
         match(resizedImage)
     }
 
     private fun match(resizedImage: ByteArray) {
+        mOfferList.clear()
+        mObjectProposalList.clear()
         val resizedImageBtm = BitmapFactory.decodeByteArray(resizedImage, 0, resizedImage.size)
         val obs1 = matchingApi
                 .exact(true)

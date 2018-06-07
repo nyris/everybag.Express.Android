@@ -43,7 +43,6 @@ class MainActivity : BaseActivity() {
         super.onNewIntent(intent)
         val mainFragment = mainFragmentProvider.get()
         mainFragment.arguments = createBundleFromIntent(intent)
-        mainFragment.onResume()
     }
 
     private fun createBundleFromIntent(intent: Intent): Bundle {

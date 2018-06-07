@@ -23,14 +23,15 @@
     <RelativeLayout
         android:id="@+id/rlCameraPreview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:visibility="invisible">
 
         <de.everybag.express.custom.ImageCameraView
             android:id="@+id/imPreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
+            android:layout_centerInParent="true" />
 
         <FrameLayout
             android:layout_width="match_parent"

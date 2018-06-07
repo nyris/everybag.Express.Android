@@ -35,7 +35,7 @@ import android.view.ViewOutlineProvider
 import de.everybag.express.R
 
 
-class BezelImageView constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : android.support.v7.widget.AppCompatImageView(context, attrs, defStyle) {
+class BezelImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : android.support.v7.widget.AppCompatImageView(context, attrs, defStyle) {
     private val mBlackPaint: Paint
     private val mMaskedPaint: Paint
 
