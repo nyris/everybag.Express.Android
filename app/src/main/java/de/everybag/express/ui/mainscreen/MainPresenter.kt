@@ -1,17 +1,33 @@
+/*
+ * Copyright 2018 nyris GmbH. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package de.everybag.express.ui.mainscreen
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.graphics.RectF
 import android.net.Uri
-import android.provider.MediaStore
-import android.support.media.ExifInterface
 import de.everybag.express.BuildConfig
 import de.everybag.express.di.ActivityScoped
 import de.everybag.express.utils.toParcelable
-import io.nyris.camera.*
+import io.nyris.camera.BaseCameraView
+import io.nyris.camera.Callback
+import io.nyris.camera.ImageUtils
+import io.nyris.camera.Size
 import io.nyris.sdk.*
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
@@ -20,7 +36,8 @@ import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 /**
- *
+ * MainPresenter.kt - Class that listen to user actions from the MainFragment, retrieves pictures from camera,
+ * show offers, crop image and update UI.
  *
  * @author Sidali Mellouk
  * Created by nyris GmbH
@@ -175,7 +192,7 @@ class MainPresenter @Inject constructor(private val matchingApi: IImageMatchingA
     }
 
     override fun cropObjectImage(rectF: RectF) {
-        val newRectF= RectF(rectF)
+        val newRectF = RectF(rectF)
         val targetSize = mTargetSize!!
         val bitmapForCropping = mBitmapForCropping!!
         val bitmapForPreviewing = mBitmapForPreviewing!!
@@ -234,51 +251,8 @@ class MainPresenter @Inject constructor(private val matchingApi: IImageMatchingA
         return mIsMatching
     }
 
-    fun rotateImageFromUri(context: Context, imageUri: Uri): Bitmap? {
-        val exif = ExifInterface(context.contentResolver.openInputStream(imageUri))
-        val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-        var captureBmp: Bitmap? = MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
-        captureBmp = rotateBitmap(captureBmp, orientation)
-        return captureBmp
-    }
-
-    fun rotateBitmap(bitmap: Bitmap?, @ExifOrientation orientation: Int): Bitmap? {
-        if (bitmap == null)
-            return null
-        val matrix = Matrix()
-        when (orientation) {
-            ExifInterface.ORIENTATION_NORMAL -> return bitmap
-            ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> matrix.setScale(-1f, 1f)
-            ExifInterface.ORIENTATION_ROTATE_180 -> matrix.setRotate(180f)
-            ExifInterface.ORIENTATION_FLIP_VERTICAL -> {
-                matrix.setRotate(180f)
-                matrix.postScale(-1f, 1f)
-            }
-            ExifInterface.ORIENTATION_TRANSPOSE -> {
-                matrix.setRotate(90f)
-                matrix.postScale(-1f, 1f)
-            }
-            ExifInterface.ORIENTATION_ROTATE_90 -> matrix.setRotate(90f)
-            ExifInterface.ORIENTATION_TRANSVERSE -> {
-                matrix.setRotate(-90f)
-                matrix.postScale(-1f, 1f)
-            }
-            ExifInterface.ORIENTATION_ROTATE_270 -> matrix.setRotate(-90f)
-            else -> return bitmap
-        }
-
-        return try {
-            val bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-            bitmap.recycle()
-            bmRotated
-        } catch (e: OutOfMemoryError) {
-            e.printStackTrace()
-            null
-        }
-    }
-
     override fun onSharedImage(imageUri: Uri, targetWidth: Int, targetHeight: Int) {
-        val bmp = rotateImageFromUri(mContext, imageUri)
+        val bmp = ImageUtils.rotateImageFromUri(mContext, imageUri)
         if (bmp == null) {
             onError("Can't load bitmap from image path")
             return

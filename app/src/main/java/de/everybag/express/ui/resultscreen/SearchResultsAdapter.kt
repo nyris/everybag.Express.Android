@@ -1,3 +1,19 @@
+/*
+ * Copyright 2018 nyris GmbH. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package de.everybag.express.ui.resultscreen
 
 import android.graphics.Bitmap
@@ -15,7 +31,7 @@ import kotlinx.android.synthetic.main.layout_search_item_offer_item.view.*
 import java.io.ByteArrayOutputStream
 
 /**
- *
+ * SearchResultsAdapter.kt
  *
  * @author Sidali Mellouk
  * Created by nyris GmbH
@@ -40,8 +56,8 @@ internal class SearchResultsAdapter(private val listener: ISearchResultsViewItem
 
     private val onClickUrl = View.OnClickListener {
         val offer = it.tag as OfferParcelable
-        if (offer.links != null && offer.links?.main != null) {
-            val link = offer.links!!.main!!
+        if (offer.links?.main != null) {
+            val link = offer.links.main!!
             listener.onOpenUrl(link)
         }
     }
@@ -69,8 +85,8 @@ internal class SearchResultsAdapter(private val listener: ISearchResultsViewItem
             viewHolder.tvOfferPrice.text = offer.priceStr
         }
 
-        if (offer.images != null && offer.images?.size != 0) {
-            val url = "${offer.images!![0]}?r=512x512"
+        if (offer.images != null && offer.images.isNotEmpty()) {
+            val url = "${offer.images[0]}?r=512x512"
             Picasso
                     .get()
                     .load(url)
