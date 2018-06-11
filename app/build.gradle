@@ -96,7 +96,6 @@ androidExtensions {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -111,7 +110,7 @@ dependencies {
     implementation 'com.github.florent37:fiftyshadesof:1.0.0'
 
     implementation "io.nyris:sdk:$nyrisSdkVersion"
-    implementation "io.nyris:camera:$nyrisCameraversion"
+    implementation "io.nyris:camera:$nyrisCameraVersion"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation "com.google.dagger:dagger:$dagger2Version"
