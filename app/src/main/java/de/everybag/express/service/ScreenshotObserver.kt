@@ -23,6 +23,8 @@ import android.net.Uri
 import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
+import de.everybag.express.utils.KeysConst
+import de.everybag.express.utils.ParamsUtils
 import java.io.File
 
 /**
@@ -39,6 +41,10 @@ class ScreenshotObserver(private val mContext: Context, private val mListener: I
     private var tag = ScreenshotObserver::class.java.name
 
     override fun onChange(selfChange: Boolean, uri: Uri) {
+        val isBuddySearch = ParamsUtils.getParam(mContext, KeysConst.BUDDY_SEARCH).toBoolean()
+        if(!isBuddySearch)
+            return
+
         var cursor: Cursor? = null
         try {
             cursor = mContext.contentResolver.query(uri, arrayOf(MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.DATA), null, null, null)

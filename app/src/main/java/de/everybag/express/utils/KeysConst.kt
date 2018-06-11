@@ -27,4 +27,5 @@ object KeysConst {
     const val SCREENSHOT_PATH = "SCREENSHOT_PATH"
     const val ACTION = "ACTION"
     const val IS_RUNNING = "IS_RUNNING"
+    const val BUDDY_SEARCH = "BUDDY_SEARCH"
 }

@@ -29,6 +29,7 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.SharedElementCallback
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +41,7 @@ import de.everybag.express.di.ActivityScoped
 import de.everybag.express.model.OfferParcelable
 import de.everybag.express.ui.resultscreen.SearchResultActivity
 import de.everybag.express.utils.KeysConst
+import de.everybag.express.utils.ParamsUtils
 import io.nyris.camera.Callback
 import io.nyris.camera.ImageUtils
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -323,5 +325,20 @@ class MainFragment @Inject constructor() : BaseFragment<MainContract.Presenter>(
 
     fun clearView() {
         mPresenter.clear()
+    }
+
+    fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            ParamsUtils.saveParam(context!!, KeysConst.BUDDY_SEARCH, false.toString())
+            showMessage("Buddy Search deactivated.")
+        }
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            ParamsUtils.saveParam(context!!, KeysConst.BUDDY_SEARCH, true.toString())
+            showMessage("Buddy Search activated.")
+        }
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            activity?.onBackPressed()
+        }
+        return true
     }
 }

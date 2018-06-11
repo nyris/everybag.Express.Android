@@ -19,12 +19,14 @@ package de.everybag.express.ui.mainscreen
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.KeyEvent
 import dagger.Lazy
 import de.everybag.express.R
 import de.everybag.express.base.BaseActivity
 import de.everybag.express.utils.ActionsConst
 import de.everybag.express.utils.ActivityUtils
 import de.everybag.express.utils.KeysConst
+import de.everybag.express.utils.ParamsUtils
 import java.io.File
 import javax.inject.Inject
 
@@ -41,7 +43,6 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         val fragment = supportFragmentManager.findFragmentById(R.id.contentFrame)
         val mainFragment: MainFragment
         if (fragment == null) {
@@ -51,6 +52,10 @@ class MainActivity : BaseActivity() {
             ActivityUtils.addFragmentToActivity(
                     supportFragmentManager, mainFragment, R.id.contentFrame)
         }
+
+        val isBuddySearch = ParamsUtils.getParam(this, KeysConst.BUDDY_SEARCH)
+        if(isBuddySearch.isEmpty())
+            ParamsUtils.saveParam(this, KeysConst.BUDDY_SEARCH, false.toString())
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -98,5 +103,11 @@ class MainActivity : BaseActivity() {
             mainFragment.clearView()
             mainFragment.startCamera()
         }
+    }
+
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        val fragment = mainFragmentProvider.get()
+        return fragment.onKeyDown(keyCode, event)
     }
 }
