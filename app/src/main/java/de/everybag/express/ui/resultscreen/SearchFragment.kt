@@ -20,12 +20,14 @@ import android.app.Activity
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.support.customtabs.CustomTabsIntent
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import de.everybag.express.R
 import de.everybag.express.base.BaseFragment
 import de.everybag.express.di.ActivityScoped
@@ -59,6 +61,7 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
     init {
         val listener = object : ISearchResultsViewItemListener {
             override fun onItemClick(image: ByteArray) {
+                rcOffers.scrollToPosition(0)
                 mPresenter.searchSimilarOffers(image)
             }
 
@@ -88,8 +91,11 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
         if (listOffers != null)
             mOffersAdapter.setOffers(listOffers)
 
+        val controller = AnimationUtils.loadLayoutAnimation(context!!, R.anim.layout_animation_from_bottom)
+        rcOffers.layoutAnimation = controller
         rcOffers.layoutManager = GridLayoutManager(context, 2)
         rcOffers.adapter = mOffersAdapter
+        rcOffers.scheduleLayoutAnimation()
 
         if (listOffers == null) {
             mPresenter.searchOffers(image)
@@ -127,6 +133,7 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
 
     override fun showOffers(offers: ArrayList<OfferParcelable>) {
         mOffersAdapter.setOffers(offers)
+        rcOffers.scheduleLayoutAnimation()
         showSnackViewOnce()
     }
 
@@ -140,13 +147,15 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
     override fun showSnackViewOnce() {
         if (isShowed)
             return
-        mDialogUtils.showSnackBar(view!!,
-                "Did you find what you were looking for?",
-                "Yes",
-                "No",
-                null,
-                snackListener)
-        isShowed = true
+        Handler().postDelayed({
+            mDialogUtils.showSnackBar(view!!,
+                    "Did you find what you were looking for?",
+                    "Yes",
+                    "No",
+                    null,
+                    snackListener)
+            isShowed = true
+        }, 500)
     }
 
     override fun showClassificationActivity() {
