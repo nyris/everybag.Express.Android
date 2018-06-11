@@ -30,7 +30,7 @@ ext {
 
     def gitNameBranch = grgit.branch.current().name
     gitVersionName = grgit.describe()
-    gitVersionCode = grgit.log(includes: [gitNameBranch]).size()
+    gitVersionCode = grgit.log(includes: [gitNameBranch]).size() + 15
     gitCommitHash = grgit.head().abbreviatedId
 
     if (gitVersionName == null) {
