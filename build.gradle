@@ -31,7 +31,7 @@ buildscript {
 
 def getMavenRepo = { ->
     def url = System.getenv("NUGET_URL")
-    if(url == null || url.isEmpty())
+    if (url == null || url.isEmpty())
         return "https://dl.bintray.com/nyris/maven"
     return url
 }
@@ -42,7 +42,7 @@ allprojects {
         google()
         maven {
             url getMavenRepo()
-            if(!getMavenRepo().contains("bintray")){
+            if (!getMavenRepo().contains("bintray")) {
                 credentials {
                     username System.getenv("NUGET_USER")
                     password System.getenv("NUGET_PASSWORD")
@@ -51,6 +51,10 @@ allprojects {
                     basic(BasicAuthentication)
                 }
             }
+        }
+
+        flatDir {
+            dirs '../app/src/debug/libs'
         }
     }
 }
@@ -76,7 +80,7 @@ ext {
     rxandroidVersion = '2.0.2'
     retrofit2Version = '2.3.0'
     okhttpVersion = '3.9.1'
-    nyrisSdkVersion = '1.1.1'
+    nyrisSdkVersion = '1.1.1-1-g8e9a445'
     nyrisCameraVersion = '1.0.1'
 
     ASSET_DIR = projectDir.toString() + '/app/src/debug/assets'

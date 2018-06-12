@@ -42,7 +42,7 @@ class ScreenshotObserver(private val mContext: Context, private val mListener: I
 
     override fun onChange(selfChange: Boolean, uri: Uri) {
         val isBuddySearch = ParamsUtils.getParam(mContext, KeysConst.BUDDY_SEARCH).toBoolean()
-        if(!isBuddySearch)
+        if (!isBuddySearch)
             return
 
         var cursor: Cursor? = null

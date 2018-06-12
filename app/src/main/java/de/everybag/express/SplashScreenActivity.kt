@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity
 import de.everybag.express.ui.mainscreen.MainActivity
 import de.everybag.express.utils.DialogUtils
 import de.everybag.express.utils.NetworkUtils
+
 /**
  * @author Sidali Mellouk
  * Created by nyris GmbH
