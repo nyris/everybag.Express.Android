@@ -42,6 +42,7 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
     }
 
     override fun onDetach() {
+        mCompositeDisposable.clear()
         unsubscribe()
         mView = null
     }
@@ -52,7 +53,7 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
 
     override fun searchSimilarOffers(image: ByteArray) {
         mView?.showProgress()
-        matchingApi
+        val disposable = matchingApi
                 .exact(false)
                 .similarity(true)
                 .ocr(false)
@@ -63,6 +64,7 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
                 }, {
                     mView?.showError(it.message.toString())
                 })
+        mCompositeDisposable.add(disposable)
     }
 
     override fun openOfferLink(link: String) {
