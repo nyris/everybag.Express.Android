@@ -27,6 +27,6 @@
         app:autoFocus="true"
         app:imageHeight="512"
         app:imageWidth="512"
-        app:recognition="barcode"
+        app:recognition="none"
         app:saveImage="true" />
 </FrameLayout>
