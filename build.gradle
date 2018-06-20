@@ -81,7 +81,7 @@ ext {
     retrofit2Version = '2.3.0'
     okhttpVersion = '3.9.1'
     nyrisSdkVersion = '1.1.1-1-g8e9a445'
-    nyrisCameraVersion = '1.0.2-9-gc571474'
+    nyrisCameraVersion = '1.0.2-10-g4eaa659'
 
     ASSET_DIR = projectDir.toString() + '/app/src/debug/assets'
 }
