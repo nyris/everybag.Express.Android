@@ -62,6 +62,7 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
                     mView?.hideProgress()
                     mView?.showOffers(it.offers.toParcelable())
                 }, {
+                    mView?.hideProgress()
                     mView?.showError(it.message.toString())
                 })
         mCompositeDisposable.add(disposable)
@@ -79,6 +80,7 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
                     mView?.hideProgress()
                     mView?.showOffers(it.offers.toParcelable())
                 }, {
+                    mView?.hideProgress()
                     mView?.showError(it.message.toString())
                 })
     }
