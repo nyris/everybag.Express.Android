@@ -34,7 +34,7 @@ Publish To GPlay:
 Push to Github:
   stage: source
   script:
-    - git remote add github git@github.com:nyris/SDK.Android.git
+    - git remote add github git@github.com:nyris/everybag.Express.Android.git
     - git push github master
   tags:
     - android
