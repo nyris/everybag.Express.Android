@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">@color/color_primary</color>
+    <color name="colorPrimaryDark">@color/color_primary_dark</color>
+    <color name="colorAccent">@color/color_primary</color>
+
+    <color name="white_translucent">#AAFFFFFF</color>
+    <color name="border">@color/white_translucent</color>
+    <color name="guideline">@color/white_translucent</color>
+    <color name="corner">@android:color/white</color>
+    <color name="surrounding_area">#59000000</color>
+
+
+    <color name="color_primary">#E31B5D</color>
+    <color name="color_primary_dark">#E31B5D</color>
+    <color name="color_mandy">#e25d63</color>
+    <color name="color_white">#f5f5f5</color>
+    <color name="color_gray">#ebeaea</color>
+    <color name="color_dark_2_gray">#b5b5b5</color>
+    <color name="color_dark_2_2_gray">#4f4f4f</color>
+    <color name="window_background">#FFF5F5F5</color>
 </resources>

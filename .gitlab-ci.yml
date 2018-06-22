@@ -1,0 +1,43 @@
+stages:
+  - build
+  - test
+  - publish
+  - source
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+before_script:
+  - git submodule sync --recursive
+  - git submodule update --init --recursive
+
+Build:
+  stage: build
+  script:
+    - ./gradlew clean build -x test --stacktrace
+  tags:
+    - android
+  only:
+    - master
+    - develop
+
+Publish To GPlay:
+  stage: publish
+  script:
+    - ./gradlew :app:publishApkRelease --stacktrace
+  only:
+      - master
+  when: manual
+  tags:
+    - android
+
+Push to Github:
+  stage: source
+  script:
+    - git remote add github git@github.com:nyris/SDK.Android.git
+    - git push github master
+  tags:
+    - android
+  when: manual
+  only:
+    - master
