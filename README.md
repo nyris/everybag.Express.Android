@@ -1,5 +1,7 @@
-everybag Express on Android
-===========================
+# everybag Express on Android
+[![](google-play-badge.png)](https://play.google.com/store/apps/details?id=de.everybag.express)
+[![Build Status](https://travis-ci.org/nyris/everybag.Express.Android.svg?branch=master)](https://travis-ci.org/nyris/everybag.Express.Android)
+
 ![](nyris_logo.png)
 
 This repo contain the source of [everybag Express](https://play.google.com/store/apps/details?id=de.everybag.express).
