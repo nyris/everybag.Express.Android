@@ -100,10 +100,6 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
         if (listOffers == null) {
             mPresenter.searchOffers(image)
         } else {
-            if (listOffers.size == 0) {
-                showError("No offers found for the selected object")
-                return
-            }
             showOffers(listOffers)
             hideProgress()
         }
@@ -132,6 +128,10 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
     }
 
     override fun showOffers(offers: ArrayList<OfferParcelable>) {
+        if (offers.size == 0) {
+            showError("No offers found for the selected object")
+            return
+        }
         mOffersAdapter.setOffers(offers)
         rcOffers.scheduleLayoutAnimation()
         showSnackViewOnce()

@@ -44,8 +44,8 @@ import de.everybag.express.utils.KeysConst
 import de.everybag.express.utils.ParamsUtils
 import io.nyris.camera.Callback
 import io.nyris.camera.ImageUtils
-import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.view_camera.*
+import kotlinx.android.synthetic.prod.fragment_main.*
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
@@ -127,11 +127,6 @@ class MainFragment @Inject constructor() : BaseFragment<MainContract.Presenter>(
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        for (permission in perms) {
-            if (permission == android.Manifest.permission.CAMERA) {
-                onResume()
-            }
-        }
     }
 
     override fun onDestroy() {

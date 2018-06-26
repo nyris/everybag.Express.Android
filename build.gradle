@@ -24,14 +24,14 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.1.2'
         classpath 'com.google.gms:google-services:3.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'com.github.triplet.gradle:play-publisher:1.2.0'
+        classpath 'com.github.triplet.gradle:play-publisher:1.2.2'
         classpath 'org.ajoberstar:grgit:2.1.1'
     }
 }
 
 def getMavenRepo = { ->
     def url = System.getenv("NUGET_URL")
-    if(url == null || url.isEmpty())
+    if (url == null || url.isEmpty())
         return "https://dl.bintray.com/nyris/maven"
     return url
 }
@@ -42,7 +42,7 @@ allprojects {
         google()
         maven {
             url getMavenRepo()
-            if(!getMavenRepo().contains("bintray")){
+            if (!getMavenRepo().contains("bintray")) {
                 credentials {
                     username System.getenv("NUGET_USER")
                     password System.getenv("NUGET_PASSWORD")
@@ -51,6 +51,10 @@ allprojects {
                     basic(BasicAuthentication)
                 }
             }
+        }
+
+        flatDir {
+            dirs '../app/src/dev/libs'
         }
     }
 }
@@ -76,8 +80,8 @@ ext {
     rxandroidVersion = '2.0.2'
     retrofit2Version = '2.3.0'
     okhttpVersion = '3.9.1'
-    nyrisSdkVersion = '1.1.1'
-    nyrisCameraVersion = '1.0.1'
+    nyrisSdkVersion = '1.2'
+    nyrisCameraVersion = '1.0.2-12-g6d63e2c'
 
-    ASSET_DIR = projectDir.toString() + '/app/src/debug/assets'
+    ASSET_DIR = projectDir.toString() + '/app/src/dev/assets'
 }

@@ -21,7 +21,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.RectF
 import android.net.Uri
-import de.everybag.express.BuildConfig
 import de.everybag.express.di.ActivityScoped
 import de.everybag.express.utils.toParcelable
 import io.nyris.camera.BaseCameraView
@@ -82,15 +81,9 @@ class MainPresenter @Inject constructor(private val matchingApi: IImageMatchingA
     }
 
     override fun onCameraClosed(cameraView: BaseCameraView) {
-        if (!BuildConfig.DEBUG)
-            return
-        mView?.showMessage("onCameraClosed")
     }
 
     override fun onCameraOpened(cameraView: BaseCameraView) {
-        if (!BuildConfig.DEBUG)
-            return
-        mView?.showMessage("onCameraOpened")
     }
 
     override fun onError(errorMessage: String) {

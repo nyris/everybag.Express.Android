@@ -29,10 +29,11 @@ import android.support.v4.app.FragmentManager
  */
 class ActivityUtils {
     companion object {
+        const val RESULT_ACTIVITY = 123
         fun addFragmentToActivity(fragmentManager: FragmentManager,
                                   fragment: Fragment, frameId: Int) {
             val transaction = fragmentManager.beginTransaction()
-            transaction.add(frameId, fragment)
+            transaction.replace(frameId, fragment)
             transaction.addToBackStack(fragment.javaClass.name)
             transaction.commit()
         }

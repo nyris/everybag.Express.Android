@@ -45,9 +45,20 @@ class ParamsUtils {
          * @param key A variable of type String
          * @return String value of key
          */
-        fun getParam(context: Context, key: String): String {
+        fun getParam(context: Context, key: String, default: String = ""): String {
             val mPrefs = PreferenceManager.getDefaultSharedPreferences(context)
-            return mPrefs.getString(key, "")
+            return mPrefs.getString(key, default)
         }
+
+        /**
+         * Get Saved value from Shared Preferences
+         * @param key A variable of type String
+         * @return String value of key
+         */
+        fun getParamBoolean(context: Context, key: String, default: Boolean = false): Boolean {
+            val mPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+            return mPrefs.getBoolean(key, false)
+        }
+
     }
 }

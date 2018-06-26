@@ -63,12 +63,6 @@ abstract class ApplicationModule {
 
         @Provides
         @JvmStatic
-        fun provideOfferManagerApi(nyris: INyris): IOfferManagerApi {
-            return nyris.offerManager()
-        }
-
-        @Provides
-        @JvmStatic
         fun provideSimilarityApi(nyris: INyris): ISimilarityApi {
             return nyris.similarity()
         }
