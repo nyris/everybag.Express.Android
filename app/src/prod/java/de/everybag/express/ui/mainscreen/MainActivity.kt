@@ -23,10 +23,7 @@ import android.view.KeyEvent
 import dagger.Lazy
 import de.everybag.express.R
 import de.everybag.express.base.BaseActivity
-import de.everybag.express.utils.ActionsConst
-import de.everybag.express.utils.ActivityUtils
-import de.everybag.express.utils.KeysConst
-import de.everybag.express.utils.ParamsUtils
+import de.everybag.express.utils.*
 import java.io.File
 import javax.inject.Inject
 
@@ -39,6 +36,7 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var mainFragmentProvider: Lazy<MainFragment>
 
+    private lateinit var mDialog : DialogUtils
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -56,6 +54,8 @@ class MainActivity : BaseActivity() {
         val isBuddySearch = ParamsUtils.getParam(this, KeysConst.BUDDY_SEARCH)
         if (isBuddySearch.isEmpty())
             ParamsUtils.saveParam(this, KeysConst.BUDDY_SEARCH, false.toString())
+
+        mDialog = DialogUtils(this)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -97,7 +97,7 @@ class MainActivity : BaseActivity() {
             if (supportFragmentManager.backStackEntryCount > 1) {
                 supportFragmentManager.popBackStack()
             } else {
-                this.finish()
+                mDialog.messageBoxDialogExitYesNo()
             }
         } else {
             mainFragment.clearView()

@@ -40,8 +40,8 @@ android {
         applicationId "de.everybag.express"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode versionCode
-        versionName versionName
+        versionCode gitVersionCode
+        versionName gitVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -68,7 +68,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 
     android {
         lintOptions {
@@ -127,7 +126,7 @@ dependencies {
     }
 
     implementation "io.nyris:sdk:$nyrisSdkVersion"
-    implementation ("io.nyris:camera:$nyrisCameraVersion") {
+    implementation("io.nyris:camera:$nyrisCameraVersion") {
         exclude group: 'org.tensorflow'
     }
 }

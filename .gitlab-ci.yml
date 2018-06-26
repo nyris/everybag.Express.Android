@@ -32,10 +32,12 @@ Publish To GPlay:
   tags:
     - android
 
-Publish Dev To GPlay:
+Publish Dev:
   stage: publish
   script:
-    - ./gradlew :app:publishApkDevRelease --stacktrace
+    - ./gradlew assembleDevRelease
+    - cd app/build/outputs/apk/dev/release
+    - gsutil cp app-dev-release.apk gs://dev-apk
   only:
       - develop
   when: manual

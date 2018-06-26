@@ -35,7 +35,7 @@ class OfferImageContainerByParentSize : RelativeLayout {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        if(widthMeasureSpec == 0)
+        if (widthMeasureSpec == 0)
             super.onMeasure(heightMeasureSpec, heightMeasureSpec)
         else
             super.onMeasure(widthMeasureSpec, widthMeasureSpec)
