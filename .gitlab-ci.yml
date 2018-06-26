@@ -24,9 +24,20 @@ Build:
 Publish To GPlay:
   stage: publish
   script:
-    - ./gradlew :app:publishApkRelease --stacktrace
+    - export USE_DEV=""
+    - ./gradlew :app:publishApkProdRelease --stacktrace
   only:
       - master
+  when: manual
+  tags:
+    - android
+
+Publish Dev To GPlay:
+  stage: publish
+  script:
+    - ./gradlew :app:publishApkDevRelease --stacktrace
+  only:
+      - develop
   when: manual
   tags:
     - android
