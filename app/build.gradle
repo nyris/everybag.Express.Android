@@ -46,15 +46,6 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
-    signingConfigs {
-        release {
-            keyAlias System.getenv("KEY_ALIAS")
-            keyPassword System.getenv("KEY_PASSWORD")
-            storeFile file(String.valueOf(System.getenv("KEY_STORE_LOCATION")))
-            storePassword System.getenv("KEY_STORE_PASSWORD")
-        }
-    }
-
     buildTypes {
         debug {
             debuggable true
@@ -63,7 +54,6 @@ android {
 
         release {
             minifyEnabled false
-            signingConfig signingConfigs.release
             buildConfigField "String", "API_KEY", "\"" + System.getenv("PUBLIC_API_KEY") + "\""
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
