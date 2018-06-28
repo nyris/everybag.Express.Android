@@ -1,3 +1,4 @@
-[submodule "app/src/debug"]
-	path = app/src/debug
+
+[submodule "app/src/dev"]
+	path = app/src/dev
 	url = ../everybag.express.android.internal.git

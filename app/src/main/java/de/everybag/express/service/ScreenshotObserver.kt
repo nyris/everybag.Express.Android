@@ -42,14 +42,14 @@ class ScreenshotObserver(private val mContext: Context, private val mListener: I
 
     override fun onChange(selfChange: Boolean, uri: Uri) {
         val isBuddySearch = ParamsUtils.getParam(mContext, KeysConst.BUDDY_SEARCH).toBoolean()
-        if(!isBuddySearch)
+        if (!isBuddySearch)
             return
 
         var cursor: Cursor? = null
         try {
             cursor = mContext.contentResolver.query(uri, arrayOf(MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.DATA), null, null, null)
-            if (cursor != null && cursor!!.moveToLast()) {
-                val displayNameColumnIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)
+            if (cursor != null && cursor.moveToLast()) {
+                val displayNameColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)
                 val dataColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
                 val fileName = cursor.getString(displayNameColumnIndex)
                 val path = cursor.getString(dataColumnIndex)

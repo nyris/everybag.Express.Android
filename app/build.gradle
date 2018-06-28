@@ -23,8 +23,11 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.github.triplet.play'
 apply from: 'git-version.gradle'
 
-android {
+if (file('src/dev/build.gradle').exists()) {
+    apply from: 'src/dev/build.gradle'
+}
 
+android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -37,8 +40,8 @@ android {
         applicationId "de.everybag.express"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode versionCode
-        versionName versionName
+        versionCode gitVersionCode
+        versionName gitVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -55,19 +58,16 @@ android {
     buildTypes {
         debug {
             debuggable true
-            applicationIdSuffix ".debug"
-            resValue "string", "app_name", "Dev Express"
             buildConfigField "String", "API_KEY", "\"" + System.getenv("PUBLIC_API_KEY") + "\""
         }
 
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             buildConfigField "String", "API_KEY", "\"" + System.getenv("PUBLIC_API_KEY") + "\""
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 
     android {
         lintOptions {
@@ -82,12 +82,14 @@ android {
     aaptOptions {
         noCompress 'pb'
     }
-}
 
-play {
-    track = 'alpha'
-    serviceAccountEmail = System.getenv("GOOGLE_PLAY_ACCOUNT")
-    pk12File = file(System.getenv("P12_PATH"))
+    flavorDimensions 'environment'
+    productFlavors {
+        prod {
+            resValue "string", "app_name", "everybag Express"
+            dimension 'environment'
+        }
+    }
 }
 
 androidExtensions {
@@ -109,9 +111,6 @@ dependencies {
     implementation 'com.github.davidpizarro:autolabelui:1.0.1'
     implementation 'com.github.florent37:fiftyshadesof:1.0.0'
 
-    implementation "io.nyris:sdk:$nyrisSdkVersion"
-    implementation "io.nyris:camera:$nyrisCameraVersion"
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation "com.google.dagger:dagger:$dagger2Version"
     implementation "com.google.dagger:dagger-android:$dagger2Version"
@@ -124,5 +123,10 @@ dependencies {
     implementation 'androidx.core:core-ktx:0.3'
     implementation('com.squareup.picasso:picasso:2.71828') {
         exclude group: 'com.android.support'
+    }
+
+    implementation "io.nyris:sdk:$nyrisSdkVersion"
+    implementation("io.nyris:camera:$nyrisCameraVersion") {
+        exclude group: 'org.tensorflow'
     }
 }

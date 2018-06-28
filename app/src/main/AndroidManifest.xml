@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--*
+<?xml version="1.0" encoding="utf-8"?><!--*
     * Copyright 2018 nyris GmbH. All rights reserved.
     *
     * Licensed under the Apache License, Version 2.0 (the "License");
@@ -58,17 +57,6 @@
             android:name=".ui.resultscreen.SearchResultActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Nyris.Transparent" />
-
-        <receiver android:name=".service.BootReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="de.everybag.express.android.action.HANDLE_SCREENSHOT" />
-            </intent-filter>
-        </receiver>
-
-        <service
-            android:name="de.everybag.express.service.ScreenshotService"
-            android:label="ScreenshotService" />
     </application>
 
 </manifest>
