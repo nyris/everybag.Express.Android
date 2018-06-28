@@ -40,7 +40,6 @@ Publish Dev:
     - gsutil cp app-dev-release.apk gs://dev-apk
   only:
       - develop
-  when: manual
   tags:
     - android
 
