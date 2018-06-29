@@ -197,25 +197,6 @@ class BezelImageView @JvmOverloads constructor(context: Context, attrs: Attribut
         isPressed = isPressed()
     }
 
-
-    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        // Check for clickable state and do nothing if disabled
-        if (!this.isClickable) {
-            this.isSelected = false
-            return super.onTouchEvent(event)
-        }
-
-        // Set selected state based on Motion Event
-        when (event.action) {
-            MotionEvent.ACTION_DOWN -> this.isSelected = true
-            MotionEvent.ACTION_UP, MotionEvent.ACTION_SCROLL, MotionEvent.ACTION_OUTSIDE, MotionEvent.ACTION_CANCEL -> this.isSelected = false
-        }
-
-        // Redraw image and return super type
-        this.invalidate()
-        return super.dispatchTouchEvent(event)
-    }
-
     override fun drawableStateChanged() {
         super.drawableStateChanged()
         if (mMaskDrawable != null && mMaskDrawable.isStateful) {
@@ -249,21 +230,5 @@ class BezelImageView @JvmOverloads constructor(context: Context, attrs: Attribut
         this.mSelectorColor = selectorColor
         this.mSelectorFilter = PorterDuffColorFilter(Color.argb(mSelectorAlpha, Color.red(mSelectorColor), Color.green(mSelectorColor), Color.blue(mSelectorColor)), PorterDuff.Mode.SRC_ATOP)
         this.invalidate()
-    }
-
-    fun disableTouchFeedback(disable: Boolean) {
-        if (disable) {
-            mTempDesaturateColorFilter = this.mDesaturateColorFilter
-            mTempSelectorFilter = this.mSelectorFilter
-            this.mSelectorFilter = null
-            this.mDesaturateColorFilter = null
-        } else {
-            if (mTempDesaturateColorFilter != null) {
-                this.mDesaturateColorFilter = mTempDesaturateColorFilter
-            }
-            if (mTempSelectorFilter != null) {
-                this.mSelectorFilter = mTempSelectorFilter
-            }
-        }
     }
 }

@@ -32,6 +32,7 @@ import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import javax.inject.Inject
 
 /**
@@ -108,21 +109,29 @@ class MainPresenter @Inject constructor(private val matchingApi: IImageMatchingA
         val obs2 = objectProposalApi.extractObjects(resizedImage)
 
         val disposable = Single.zip(obs1, obs2, BiFunction<OfferResponseBody, List<ObjectProposal>, List<ObjectProposal>> { offerResponseBody: OfferResponseBody, objs: List<ObjectProposal> ->
-            mOfferList.addAll(offerResponseBody.offers)
-            objs
-        })
-                .subscribe({
-                    normalizeAndAddObjects(resizedImageBtm.width, resizedImageBtm.height, it)
-                    mView?.hideLoading()
-                    mView?.showObjects(mObjectProposalList)
-                    mIsMatching = false
-                }, {
-                    normalizeAndAddObjects(resizedImageBtm.width, resizedImageBtm.height, mutableListOf())
-                    mView?.onError(it.message.toString())
-                    mIsMatching = false
-                })
+                mOfferList.addAll(offerResponseBody.offers)
+                objs
+            })
+            .subscribe({
+                normalizeAndAddObjects(resizedImageBtm.width, resizedImageBtm.height, it)
+                mView?.hideLoading()
+                mView?.showObjects(mObjectProposalList)
+                mIsMatching = false
+            }, {
+                normalizeAndAddObjects(resizedImageBtm.width, resizedImageBtm.height, mutableListOf())
+                handleError(it)
+                mIsMatching = false
+            })
 
         mCompositeDisposable.add(disposable)
+    }
+
+
+
+    private fun handleError(throwable: Throwable){
+        if(throwable is IOException){
+            mView?.onError("Please check your internet connection.")
+        }else mView?.onError(throwable.message.toString())
     }
 
     private fun normalizeAndAddObjects(bitmapWidth: Int, bitmapHeight: Int, objs: List<ObjectProposal>) {
