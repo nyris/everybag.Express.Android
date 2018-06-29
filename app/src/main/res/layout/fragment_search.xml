@@ -24,7 +24,6 @@
         android:layout_height="96dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:onClick="onSelectedPictureClick"
         android:scaleType="centerCrop"
         android:transitionName="@string/activity_transition" />
 

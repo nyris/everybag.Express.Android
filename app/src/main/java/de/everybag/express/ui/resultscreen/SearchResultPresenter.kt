@@ -20,6 +20,7 @@ import de.everybag.express.di.ActivityScoped
 import de.everybag.express.utils.toParcelable
 import io.nyris.sdk.IImageMatchingApi
 import io.reactivex.disposables.CompositeDisposable
+import java.io.IOException
 import javax.inject.Inject
 
 /**
@@ -62,8 +63,7 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
                     mView?.hideProgress()
                     mView?.showOffers(it.offers.toParcelable())
                 }, {
-                    mView?.hideProgress()
-                    mView?.showError(it.message.toString())
+                    handleError(it)
                 })
         mCompositeDisposable.add(disposable)
     }
@@ -80,8 +80,14 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
                     mView?.hideProgress()
                     mView?.showOffers(it.offers.toParcelable())
                 }, {
-                    mView?.hideProgress()
-                    mView?.showError(it.message.toString())
+                    handleError(it)
                 })
+    }
+
+    private fun handleError(throwable: Throwable){
+        mView?.hideProgress()
+        if(throwable is IOException){
+            mView?.showError("Please check your internet connection.")
+        }else mView?.showError(throwable.message.toString())
     }
 }
