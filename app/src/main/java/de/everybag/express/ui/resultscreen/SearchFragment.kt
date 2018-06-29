@@ -83,9 +83,9 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
         val image = arguments!!.getByteArray("image")
         val imageBitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
         imCropped.setImageBitmap(imageBitmap)
-        imCropped.setOnClickListener({
+        imCropped.setOnClickListener {
             activity?.onBackPressed()
-        })
+        }
 
         val listOffers = arguments!!.getParcelableArrayList<OfferParcelable>("listOffers")
         if (listOffers != null)
@@ -159,6 +159,5 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
     }
 
     override fun showClassificationActivity() {
-        TODO("To classification activity not implemented")
     }
 }
