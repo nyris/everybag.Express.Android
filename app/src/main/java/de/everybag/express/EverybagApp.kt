@@ -37,7 +37,11 @@ class EverybagApp : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
         val i = Intent(this, ScreenshotService::class.java)
-        startService(i)
+        try {
+            startService(i)
+        }catch (e : Exception){
+            e.printStackTrace()
+        }
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
