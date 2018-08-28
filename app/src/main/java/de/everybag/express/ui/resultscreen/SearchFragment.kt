@@ -70,7 +70,13 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
                 mPresenter.openOfferLink(link)
             }
         }
+
         mOffersAdapter = SearchResultsAdapter(listener)
+        mOffersAdapter.setOnBottomListener(object : IOnBottomReachedListener{
+            override fun onBottomReached() {
+                showSnackViewOnce()
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -136,7 +142,8 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
         mOffersAdapter.setOffers(offers)
         rcOffers.scheduleLayoutAnimation()
         mRequestId = requestId
-        showSnackViewOnce()
+
+        if(offers.size<=4) showSnackViewOnce()
     }
 
     override fun showOfferWebSite(link: String) {
