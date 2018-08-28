@@ -40,6 +40,11 @@ import java.io.ByteArrayOutputStream
 
 internal class SearchResultsAdapter(private val listener: ISearchResultsViewItemListener) : RecyclerView.Adapter<SearchResultsAdapter.OfferViewHolder>() {
     private val mOffers = ArrayList<OfferParcelable>()
+    private var mBottomListener : IOnBottomReachedListener? = null
+
+    fun setOnBottomListener(listener: IOnBottomReachedListener){
+        mBottomListener = listener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OfferViewHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -74,6 +79,8 @@ internal class SearchResultsAdapter(private val listener: ISearchResultsViewItem
     }
 
     override fun onBindViewHolder(viewHolder: OfferViewHolder, position: Int) {
+        if(position == mOffers.size -1) mBottomListener?.onBottomReached()
+
         val offer = mOffers[position]
         viewHolder.itemView.tag = offer
 

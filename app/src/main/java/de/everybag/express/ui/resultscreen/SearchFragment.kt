@@ -48,13 +48,14 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
     private var mOffersAdapter: SearchResultsAdapter
     private lateinit var mDialogUtils: DialogUtils
     private var isShowed: Boolean = false
+    private var mRequestId : String? = null
 
     @Inject
     lateinit var mPresenter: SearchResultContract.Presenter
 
     private val snackListener = object : DialogUtils.ISnackListener {
         override fun onClick() {
-            showClassificationActivity()
+            markImageAsNotFound()
         }
     }
 
@@ -69,7 +70,13 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
                 mPresenter.openOfferLink(link)
             }
         }
+
         mOffersAdapter = SearchResultsAdapter(listener)
+        mOffersAdapter.setOnBottomListener(object : IOnBottomReachedListener{
+            override fun onBottomReached() {
+                showSnackViewOnce()
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -100,7 +107,7 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
         if (listOffers == null) {
             mPresenter.searchOffers(image)
         } else {
-            showOffers(listOffers)
+            showOffers(listOffers, null)
             hideProgress()
         }
     }
@@ -127,14 +134,16 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
         mDialogUtils.messageBoxDialog("Error", message, DialogUtils.KindMessageBox.Back)
     }
 
-    override fun showOffers(offers: ArrayList<OfferParcelable>) {
+    override fun showOffers(offers: ArrayList<OfferParcelable>, requestId : String?) {
         if (offers.size == 0) {
             showError("No offers found for the selected object")
             return
         }
         mOffersAdapter.setOffers(offers)
         rcOffers.scheduleLayoutAnimation()
-        showSnackViewOnce()
+        mRequestId = requestId
+
+        if(offers.size<=4) showSnackViewOnce()
     }
 
     override fun showOfferWebSite(link: String) {
@@ -158,6 +167,7 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
         }, 500)
     }
 
-    override fun showClassificationActivity() {
+    override fun markImageAsNotFound() {
+        if(mRequestId != null) mPresenter.markImageNotFound(mRequestId!!)
     }
 }
