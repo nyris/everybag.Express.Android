@@ -19,6 +19,8 @@ package de.everybag.express.ui.resultscreen
 import de.everybag.express.di.ActivityScoped
 import de.everybag.express.utils.toParcelable
 import io.nyris.sdk.IImageMatchingApi
+import io.nyris.sdk.INotFoundMatchingApi
+import io.nyris.sdk.OfferResponse
 import io.reactivex.disposables.CompositeDisposable
 import java.io.IOException
 import javax.inject.Inject
@@ -32,7 +34,8 @@ import javax.inject.Inject
  * Copyright © 2018 nyris GmbH. All rights reserved.
  */
 @ActivityScoped
-class SearchResultPresenter @Inject constructor(private val matchingApi: IImageMatchingApi) : SearchResultContract.Presenter {
+class SearchResultPresenter @Inject constructor(private val matchingApi: IImageMatchingApi,
+                                                private val notFoundApiMatchingApi: INotFoundMatchingApi) : SearchResultContract.Presenter {
     private var mView: SearchResultContract.View? = null
 
     @Inject
@@ -43,13 +46,12 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
     }
 
     override fun onDetach() {
-        mCompositeDisposable.clear()
         unsubscribe()
         mView = null
     }
 
     override fun unsubscribe() {
-        mCompositeDisposable.clear()
+        //mCompositeDisposable.clear()
     }
 
     override fun searchSimilarOffers(image: ByteArray) {
@@ -61,7 +63,7 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
                 .match(image)
                 .subscribe({
                     mView?.hideProgress()
-                    mView?.showOffers(it.offers.toParcelable())
+                    mView?.showOffers(it.offers.toParcelable(), null)
                 }, {
                     handleError(it)
                 })
@@ -75,11 +77,25 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
     override fun searchOffers(image: ByteArray) {
         mView?.showProgress()
         matchingApi
-                .match(image)
+                .match(image, OfferResponse::class.java)
                 .subscribe({
+                    if(it.body == null){
+                        mView?.showMessage("Something wrong happened !")
+                        return@subscribe
+                    }
                     mView?.hideProgress()
-                    mView?.showOffers(it.offers.toParcelable())
+                    mView?.showOffers(it.body!!.offers.toParcelable(), it.getRequestId())
                 }, {
+                    handleError(it)
+                })
+    }
+
+    override fun markImageNotFound(requestId: String) {
+        notFoundApiMatchingApi
+                .markAsNotFound(requestId)
+                .subscribe({
+                    mView?.showMessage("Image marked as not found.")
+                },{
                     handleError(it)
                 })
     }

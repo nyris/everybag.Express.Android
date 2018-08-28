@@ -31,11 +31,11 @@ interface SearchResultContract {
     interface View : MvpView<Presenter> {
         fun showProgress()
         fun hideProgress()
-        fun showOffers(offers: ArrayList<OfferParcelable>)
+        fun showOffers(offers: ArrayList<OfferParcelable>, requestId: String?)
         fun showOfferWebSite(link: String)
         fun showSnackViewOnce()
         fun showError(message: String)
-        fun showClassificationActivity()
+        fun markImageAsNotFound()
     }
 
     interface Presenter : MvpPresenter<View> {
@@ -43,5 +43,6 @@ interface SearchResultContract {
         fun openOfferLink(link: String)
         fun searchOffers(image: ByteArray)
         fun unsubscribe()
+        fun markImageNotFound(requestId : String)
     }
 }
