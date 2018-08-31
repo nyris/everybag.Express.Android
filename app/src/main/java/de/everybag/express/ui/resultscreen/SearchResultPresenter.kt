@@ -51,7 +51,7 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
     }
 
     override fun unsubscribe() {
-        //mCompositeDisposable.clear()
+        mCompositeDisposable.clear()
     }
 
     override fun searchSimilarOffers(image: ByteArray) {
@@ -60,10 +60,12 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
                 .exact(false)
                 .similarity(true)
                 .ocr(false)
+                .categoryPrediction(true)
                 .match(image)
                 .subscribe({
                     mView?.hideProgress()
                     mView?.showOffers(it.offers.toParcelable(), null)
+                    mView?.showPredicatedCategories(it.predictedCategories)
                 }, {
                     handleError(it)
                 })
@@ -77,14 +79,17 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
     override fun searchOffers(image: ByteArray) {
         mView?.showProgress()
         matchingApi
+                .categoryPrediction(true)
                 .match(image, OfferResponse::class.java)
                 .subscribe({
                     if(it.body == null){
                         mView?.showMessage("Something wrong happened !")
                         return@subscribe
                     }
+                    val body = it.body!!
                     mView?.hideProgress()
-                    mView?.showOffers(it.body!!.offers.toParcelable(), it.getRequestId())
+                    mView?.showOffers(body.offers.toParcelable(), it.getRequestId())
+                    mView?.showPredicatedCategories(body.predictedCategories)
                 }, {
                     handleError(it)
                 })
