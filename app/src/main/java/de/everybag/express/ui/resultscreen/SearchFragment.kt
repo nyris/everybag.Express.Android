@@ -46,6 +46,7 @@ import javax.inject.Inject
 @ActivityScoped
 class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.Presenter>(), SearchResultContract.View {
     private var mOffersAdapter: SearchResultsAdapter
+    private var mPredicatedCategoriesAdapter: PredicatedCategoriesAdapter
     private lateinit var mDialogUtils: DialogUtils
     private var isShowed: Boolean = false
     private var mRequestId : String? = null
@@ -72,6 +73,8 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
         }
 
         mOffersAdapter = SearchResultsAdapter(listener)
+        mPredicatedCategoriesAdapter = PredicatedCategoriesAdapter()
+
         mOffersAdapter.setOnBottomListener(object : IOnBottomReachedListener{
             override fun onBottomReached() {
                 showSnackViewOnce()
@@ -104,10 +107,14 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
         rcOffers.adapter = mOffersAdapter
         rcOffers.scheduleLayoutAnimation()
 
+        rcCategories.adapter = mPredicatedCategoriesAdapter
+
         if (listOffers == null) {
             mPresenter.searchOffers(image)
+            rcCategories.visibility = View.VISIBLE
         } else {
             showOffers(listOffers, null)
+            rcCategories.visibility = View.GONE
             hideProgress()
         }
     }
@@ -144,6 +151,13 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
         mRequestId = requestId
 
         if(offers.size<=4) showSnackViewOnce()
+    }
+
+    override fun showPredicatedCategories(predicatedCategories: Map<String, Float>) {
+        if (predicatedCategories.isEmpty()) {
+            return
+        }
+        mPredicatedCategoriesAdapter.setPredictedCategories(predicatedCategories)
     }
 
     override fun showOfferWebSite(link: String) {

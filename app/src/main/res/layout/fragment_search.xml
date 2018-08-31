@@ -13,38 +13,45 @@
     * See the License for the specific language governing permissions and
     * limitations under the License.
     *-->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#C0000000">
 
-    <de.everybag.express.custom.BezelImageView
-        android:id="@+id/imCropped"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:scaleType="centerCrop"
-        android:transitionName="@string/activity_transition" />
-
-    <TextView
-        android:id="@+id/tvSearchLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imCropped"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:text="search results for the selected object"
-        android:textColor="@android:color/white" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rcOffers"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tvSearchLabel"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp" />
+        android:orientation="vertical">
+
+        <de.everybag.express.custom.BezelImageView
+            android:id="@+id/imCropped"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
+            android:transitionName="@string/activity_transition" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcCategories"
+            android:orientation="horizontal"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="4dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcOffers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/vProgress"

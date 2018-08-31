@@ -32,6 +32,7 @@ interface SearchResultContract {
         fun showProgress()
         fun hideProgress()
         fun showOffers(offers: ArrayList<OfferParcelable>, requestId: String?)
+        fun showPredicatedCategories(predicatedCategories : Map<String, Float>)
         fun showOfferWebSite(link: String)
         fun showSnackViewOnce()
         fun showError(message: String)
