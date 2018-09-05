@@ -8,10 +8,11 @@ This repo contain the source of [everybag Express](https://play.google.com/store
 
 everybag express provide this features :
 * Image/Offer matching
-* Better precesion using Object recognition
+* Better precision using Object recognition
 * Similarity search
 * Buddy search1 : is when you take screen shot you can share it with the app
-* Buddy search2 : you can share any image from your devince with app
+* Buddy search2 : you can share any image from your device with app
+* Smart cropping : When the object is not recognized, the app is able to do some smart cropping
 
 License
 =======
