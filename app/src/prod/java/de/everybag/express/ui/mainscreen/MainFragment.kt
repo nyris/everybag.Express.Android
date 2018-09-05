@@ -76,21 +76,21 @@ class MainFragment @Inject constructor() : BaseFragment<MainContract.Presenter>(
         super.onViewCreated(view, savedInstanceState)
         cvTakePic.startAnimation(vPosCam)
         hideLoading()
-        cvTakePic.setOnClickListener({
+        cvTakePic.setOnClickListener {
             takePicture()
             hideCircleView()
             hideViewPinCropper()
             hideLabelCapture()
             showLoading()
-        })
+        }
 
-        viewPinCropper.addOnPinClickListener({
+        viewPinCropper.addOnPinClickListener {
             viewPinCropper.initCropWindow(it)
-        })
+        }
 
-        imValidate.setOnClickListener({
+        imValidate.setOnClickListener {
             mPresenter.cropObjectImage(viewPinCropper.selectedObjectProposal)
-        })
+        }
 
         ActivityCompat.setExitSharedElementCallback(context as Activity, object : SharedElementCallback() {
             override fun onSharedElementEnd(sharedElementNames: List<String>?, sharedElements: List<View>?, sharedElementSnapshots: List<View>?) {
@@ -171,9 +171,9 @@ class MainFragment @Inject constructor() : BaseFragment<MainContract.Presenter>(
                 hideViewPinCropper()
 
                 if (camera.width == 0) {
-                    camera.post({
+                    val post = camera.post {
                         mPresenter.onSharedImage(imageUri, camera.width, camera.height)
-                    })
+                    }
                 } else {
                     mPresenter.onSharedImage(imageUri, camera.width, camera.height)
                 }
@@ -210,9 +210,9 @@ class MainFragment @Inject constructor() : BaseFragment<MainContract.Presenter>(
         showViewPinCropper()
         viewPinCropper.setExtractedObjects(objects)
         val firstObject = objects[0]
-        viewPinCropper.initCropWindow(firstObject, {
+        viewPinCropper.initCropWindow(firstObject) {
             mPresenter.cropObjectImage(it)
-        })
+        }
     }
 
     override fun showOffersActivity(croppedBitmap: Bitmap, rectF: RectF, offers: ArrayList<OfferParcelable>) {
