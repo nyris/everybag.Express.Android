@@ -21,6 +21,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.RectF
 import android.net.Uri
+import android.os.Environment
 import de.everybag.express.di.ActivityScoped
 import de.everybag.express.utils.toParcelable
 import io.nyris.camera.BaseCameraView
@@ -31,9 +32,9 @@ import io.nyris.sdk.*
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
-import java.io.ByteArrayOutputStream
-import java.io.IOException
+import java.io.*
 import javax.inject.Inject
+
 
 /**
  * MainPresenter.kt - Class that listen to user actions from the MainFragment, retrieves pictures from camera,
@@ -136,6 +137,29 @@ class MainPresenter @Inject constructor(private val matchingApi: IImageMatchingA
 
     private fun normalizeAndAddObjects(bitmapWidth: Int, bitmapHeight: Int, objs: List<ObjectProposal>) {
         val targetSize = mTargetSize!!
+
+        var width: Float
+        val height: Float
+        if (targetSize.height > targetSize.width) {
+            height = targetSize.height.toFloat()
+            width = targetSize.width.toFloat()
+        } else {
+            height = targetSize.width.toFloat()
+            width = targetSize.height.toFloat()
+        }
+
+        val margin = 250
+        val centerMargin = (margin / 2).toFloat()
+        width -= margin
+
+        val defaultRect = RectF()
+        defaultRect.left = centerMargin
+        defaultRect.top = height / 2 - width / 2
+        defaultRect.right = width + centerMargin
+        defaultRect.bottom = defaultRect.top + width
+
+        mObjectProposalList.add(0, defaultRect)
+
         val matrixTransform = ImageUtils.getTransformationMatrix(
                 bitmapWidth,
                 bitmapHeight,
@@ -157,28 +181,20 @@ class MainPresenter @Inject constructor(private val matchingApi: IImageMatchingA
             if (rectF.right > targetSize.width)
                 rectF.right = targetSize.width.toFloat()
 
+            val distance = distance(defaultRect.centerX(), defaultRect.centerY(), rectF.centerX(), rectF.centerY())
+            val thirdWidth = defaultRect.width()/3
+            if(distance >0 && distance <= thirdWidth){
+                mObjectProposalList.remove(defaultRect)
+            }
+
             mObjectProposalList.add(rectF)
         }
+    }
 
-        if (!mObjectProposalList.isEmpty()) return
-
-        val width: Float
-        val height: Float
-        if (targetSize.height > targetSize.width) {
-            height = targetSize.height.toFloat()
-            width = targetSize.width.toFloat()
-        } else {
-            height = targetSize.width.toFloat()
-            width = targetSize.height.toFloat()
-        }
-
-        val rectF = RectF()
-        rectF.left = 0f
-        rectF.top = height / 2 - width / 2
-        rectF.right = width
-        rectF.bottom = rectF.top + width
-
-        mObjectProposalList.add(0, rectF)
+    private fun distance(x1 : Float, y1 : Float, x2 : Float, y2 : Float) : Float{
+        val dx   = (x1 - x2).toDouble()
+        val dy   = (y1 - y2).toDouble()
+        return Math.sqrt( dx*dx + dy*dy ).toFloat()
     }
 
     override fun onPictureTakenOriginal(cameraView: BaseCameraView, original: ByteArray) {
