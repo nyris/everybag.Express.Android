@@ -52,7 +52,7 @@ interface MainContract {
         fun takePicture()
         fun setImPreviewBitmap(bitmap: Bitmap)
         fun showObjects(objects: List<RectF>)
-        fun showOffersActivity(croppedBitmap: Bitmap, rectF: RectF, offers: ArrayList<OfferParcelable>)
+        fun showOffersActivity(croppedBitmap: Bitmap, rectF: RectF, offers: ArrayList<OfferParcelable>, searchTime : String)
     }
 
     interface Presenter : MvpPresenter<View> {

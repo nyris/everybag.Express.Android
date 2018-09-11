@@ -31,7 +31,7 @@ interface SearchResultContract {
     interface View : MvpView<Presenter> {
         fun showProgress()
         fun hideProgress()
-        fun showOffers(offers: ArrayList<OfferParcelable>, requestId: String?)
+        fun showOffers(offers: ArrayList<OfferParcelable>, requestId: String?, searchTime: String)
         fun showPredicatedCategories(predicatedCategories : Map<String, Float>)
         fun showOfferWebSite(link: String)
         fun showSnackViewOnce()

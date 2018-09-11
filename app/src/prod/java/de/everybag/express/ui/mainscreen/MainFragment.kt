@@ -215,7 +215,7 @@ class MainFragment @Inject constructor() : BaseFragment<MainContract.Presenter>(
         }
     }
 
-    override fun showOffersActivity(croppedBitmap: Bitmap, rectF: RectF, offers: ArrayList<OfferParcelable>) {
+    override fun showOffersActivity(croppedBitmap: Bitmap, rectF: RectF, offers: ArrayList<OfferParcelable>, searchTime : String) {
         imCropped.setImageBitmap(croppedBitmap)
         val layoutParams = imCropped.layoutParams as FrameLayout.LayoutParams
         layoutParams.width = rectF.width().toInt()
@@ -236,6 +236,7 @@ class MainFragment @Inject constructor() : BaseFragment<MainContract.Presenter>(
             val bundle = Bundle()
             if (offers.isNotEmpty()) {
                 bundle.putParcelableArrayList("listOffers", offers)
+                bundle.putString("searchTime", searchTime)
             }
 
             val stream = ByteArrayOutputStream()

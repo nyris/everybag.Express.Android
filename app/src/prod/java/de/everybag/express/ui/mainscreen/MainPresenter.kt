@@ -22,6 +22,7 @@ import android.graphics.BitmapFactory
 import android.graphics.RectF
 import android.net.Uri
 import android.os.Environment
+import android.os.SystemClock
 import de.everybag.express.di.ActivityScoped
 import de.everybag.express.utils.toParcelable
 import io.nyris.camera.BaseCameraView
@@ -58,6 +59,8 @@ class MainPresenter @Inject constructor(private val matchingApi: IImageMatchingA
     private var mObjectProposalList = mutableListOf<RectF>()
 
     private var mOfferList = mutableListOf<Offer>()
+
+    private var mSearchTime = ""
 
     private var mIsMatching = false
 
@@ -109,15 +112,18 @@ class MainPresenter @Inject constructor(private val matchingApi: IImageMatchingA
 
         val obs2 = objectProposalApi.extractObjects(resizedImage)
 
+        val previous = SystemClock.elapsedRealtime()
         val disposable = Single.zip(obs1, obs2, BiFunction<OfferResponseBody, List<ObjectProposal>, List<ObjectProposal>> { offerResponseBody: OfferResponseBody, objs: List<ObjectProposal> ->
                 mOfferList.addAll(offerResponseBody.offers)
                 objs
             })
             .subscribe({
+                val now = SystemClock.elapsedRealtime()
                 normalizeAndAddObjects(resizedImageBtm.width, resizedImageBtm.height, it)
                 mView?.hideLoading()
                 mView?.showObjects(mObjectProposalList)
                 mIsMatching = false
+                mSearchTime ="${mOfferList.size} results (${now - previous}ms)"
             }, {
                 normalizeAndAddObjects(resizedImageBtm.width, resizedImageBtm.height, mutableListOf())
                 handleError(it)
@@ -243,8 +249,7 @@ class MainPresenter @Inject constructor(private val matchingApi: IImageMatchingA
                 newRectF.top.toInt(),
                 newRectF.width().toInt(),
                 newRectF.height().toInt())
-
-        mView?.showOffersActivity(croppedBitmap, rectF, mOfferList.toParcelable())
+        mView?.showOffersActivity(croppedBitmap, rectF, mOfferList.toParcelable(), mSearchTime)
     }
 
     override fun clear() {

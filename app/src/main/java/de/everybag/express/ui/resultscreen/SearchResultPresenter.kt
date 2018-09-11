@@ -16,6 +16,7 @@
 
 package de.everybag.express.ui.resultscreen
 
+import android.os.SystemClock
 import de.everybag.express.di.ActivityScoped
 import de.everybag.express.utils.toParcelable
 import io.nyris.sdk.IImageMatchingApi
@@ -56,6 +57,7 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
 
     override fun searchSimilarOffers(image: ByteArray) {
         mView?.showProgress()
+        val previous = SystemClock.elapsedRealtime()
         val disposable = matchingApi
                 .exact(false)
                 .similarity(true)
@@ -63,8 +65,10 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
                 .categoryPrediction(true)
                 .match(image)
                 .subscribe({
+                    val now = SystemClock.elapsedRealtime()
+                    val searchTime ="${it.offers.size} results (${now - previous}ms)"
                     mView?.hideProgress()
-                    mView?.showOffers(it.offers.toParcelable(), null)
+                    mView?.showOffers(it.offers.toParcelable(), null, searchTime)
                     mView?.showPredicatedCategories(it.predictedCategories)
                 }, {
                     handleError(it)
@@ -78,6 +82,7 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
 
     override fun searchOffers(image: ByteArray) {
         mView?.showProgress()
+        val previous = SystemClock.elapsedRealtime()
         matchingApi
                 .categoryPrediction(true)
                 .match(image, OfferResponse::class.java)
@@ -86,9 +91,11 @@ class SearchResultPresenter @Inject constructor(private val matchingApi: IImageM
                         mView?.showMessage("Something wrong happened !")
                         return@subscribe
                     }
+                    val now = SystemClock.elapsedRealtime()
                     val body = it.body!!
+                    val searchTime ="${body.offers.size} results (${now - previous}ms)"
                     mView?.hideProgress()
-                    mView?.showOffers(body.offers.toParcelable(), it.getRequestId())
+                    mView?.showOffers(body.offers.toParcelable(), it.getRequestId(), searchTime)
                     mView?.showPredicatedCategories(body.predictedCategories)
                 }, {
                     handleError(it)
