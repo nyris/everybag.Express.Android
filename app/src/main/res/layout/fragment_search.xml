@@ -13,11 +13,11 @@
     * See the License for the specific language governing permissions and
     * limitations under the License.
     *-->
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#C0000000">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -33,7 +33,15 @@
             android:layout_marginTop="16dp"
             android:scaleType="centerCrop"
             android:transitionName="@string/activity_transition" />
-
+        <TextView
+            android:id="@+id/tvSearchTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:textSize="13sp"
+            tools:text="08 results (200ms)"/>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rcCategories"
             android:orientation="horizontal"

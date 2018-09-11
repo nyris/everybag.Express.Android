@@ -21,6 +21,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.SystemClock
 import android.support.customtabs.CustomTabsIntent
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
@@ -97,9 +98,11 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
             activity?.onBackPressed()
         }
 
-        val listOffers = arguments!!.getParcelableArrayList<OfferParcelable>("listOffers")
-        if (listOffers != null)
+        val listOffers = arguments?.getParcelableArrayList<OfferParcelable>("listOffers")
+        val searchTime = arguments?.getString("searchTime")
+        if (listOffers != null && listOffers.size != 0){
             mOffersAdapter.setOffers(listOffers)
+        }
 
         val controller = AnimationUtils.loadLayoutAnimation(context!!, R.anim.layout_animation_from_bottom)
         rcOffers.layoutAnimation = controller
@@ -113,7 +116,7 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
             mPresenter.searchOffers(image)
             rcCategories.visibility = View.VISIBLE
         } else {
-            showOffers(listOffers, null)
+            showOffers(listOffers, null, searchTime!!)
             rcCategories.visibility = View.GONE
             hideProgress()
         }
@@ -141,11 +144,12 @@ class SearchFragment @Inject constructor() : BaseFragment<SearchResultContract.P
         mDialogUtils.messageBoxDialog("Error", message, DialogUtils.KindMessageBox.Back)
     }
 
-    override fun showOffers(offers: ArrayList<OfferParcelable>, requestId : String?) {
+    override fun showOffers(offers: ArrayList<OfferParcelable>, requestId : String?, searchTime: String) {
         if (offers.size == 0) {
             showError("No offers found for the selected object")
             return
         }
+        tvSearchTime.text = searchTime
         mOffersAdapter.setOffers(offers)
         rcOffers.scheduleLayoutAnimation()
         mRequestId = requestId
